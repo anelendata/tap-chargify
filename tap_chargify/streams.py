@@ -80,8 +80,8 @@ class Stream():
         return utils.strptime_with_tz(value) > utils.strptime_with_tz(current_bookmark)
 
 
-    def load_schema(self):
-        schema_file = "schemas/{}.json".format(self.name)
+    def load_schema(self, schema_dir="schemas"):
+        schema_file = f"{schema_dir}/{self.name}.json"
         with open(get_abs_path(schema_file)) as f:
             schema = json.load(f)
         return schema

@@ -25,9 +25,9 @@ REQUIRED_CONFIG_KEYS = [
 ]
 
 
-def discover(client):
+def discover(client, schema_dir="schemas"):
     logger.info("Starting discover")
-    catalog = {"streams": discover_streams(client)}
+    catalog = {"streams": discover_streams(client, schema_dir)}
     json.dump(catalog, sys.stdout, indent=2)
     logger.info("Finished discover")
 
@@ -79,14 +79,18 @@ def main():
         "subdomain": parsed_args.config['subdomain']
     }
 
-    client = Chargify(**creds)
     Context.config = parsed_args.config
+    # is_full_sync = parsed_args.config.get("full_sync", "full_sync")
+    # if is_full_sync:
+    #     LOGGER.info('Running on full-sync mode')
+    # else:
+    #     LOGGER.info('Running on incremental-sync mode')
+    schema_dir = parsed_args.config.get("schema_dir", "schemas")
+
+    client = Chargify(**creds)
 
     if parsed_args.discover:
         discover(client)
     elif parsed_args.catalog:
         state = parsed_args.state or {}
         sync(client, parsed_args.catalog, state)
-
-
-

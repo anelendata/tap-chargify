@@ -10,12 +10,12 @@ import sys
 from tap_chargify.streams import STREAMS
 
 
-def discover_streams(client):
+def discover_streams(client, schema_dir="schemas"):
   streams = []
 
   for s in STREAMS.values():
     s = s(client)
-    schema = singer.resolve_schema_references(s.load_schema())
+    schema = singer.resolve_schema_references(s.load_schema(schema_dir))
 
     # If stream is `users`, then get dynamic fields via API.
     if s.name == "users":

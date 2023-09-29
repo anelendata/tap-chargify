@@ -24,7 +24,6 @@ class Chargify(object):
     self.api_key = api_key
     self.uri = "https://{subdomain}.chargify.com/".format(subdomain=subdomain)
 
-
   def retry_handler(details):
     logger.info("Received 429 -- sleeping for %s seconds",
                 details['wait'])
@@ -135,8 +134,8 @@ class Chargify(object):
   def invoices(self, bookmark=None):
     start_date = utils.strptime_with_tz(bookmark).strftime('%Y-%m-%d')
     for i in self.get("invoices.json", start_date=start_date, direction="asc"):
-      for j in i:
-        yield j["invoice"]
+      for j in i["invoices"]:
+        yield j
 
 
   def events(self, bookmark=None):
