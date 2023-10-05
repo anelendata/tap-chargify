@@ -82,13 +82,14 @@ class Stream():
 
     def load_schema(self, schema_dir="schemas"):
         schema_file = f"{schema_dir}/{self.name}.json"
-        with open(get_abs_path(schema_file)) as f:
+        with open(schema_file) as f:
+        # with open(get_abs_path(schema_file)) as f:
             schema = json.load(f)
         return schema
 
 
-    def load_metadata(self):
-        return metadata.get_standard_metadata(schema=self.load_schema(),
+    def load_metadata(self, schema_dir="schemas"):
+        return metadata.get_standard_metadata(schema=self.load_schema(schema_dir),
                                               key_properties=self.key_properties,
                                               valid_replication_keys=[self.replication_key],
                                               replication_method=self.replication_method)
@@ -179,6 +180,11 @@ class Events(Stream):
     replication_method = "FULL_TABLE"
 
 
+class SubscriptionsComponents(Stream):
+    name = "subscriptions_components"
+    replication_method = "INCREMENTAL"
+    replication_key = "updated_at"
+
 
 STREAMS = {
     "customers": Customers,
@@ -191,5 +197,6 @@ STREAMS = {
     "transactions": Transactions,
     "statements": Statements,
     "invoices": Invoices,
-    "events": Events
+    "events": Events,
+    "subscriptions_components": SubscriptionsComponents
 }

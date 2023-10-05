@@ -90,7 +90,7 @@ def main():
     client = Chargify(**creds)
 
     if parsed_args.discover:
-        discover(client)
+        discover(client, schema_dir)
     elif parsed_args.catalog:
         state = parsed_args.state or {}
         sync(client, parsed_args.catalog, state)

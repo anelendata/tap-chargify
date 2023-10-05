@@ -25,7 +25,7 @@ def discover_streams(client, schema_dir="schemas"):
       field_schema = translate_to_schema(fields)     
       schema = merge(schema, field_schema)
 
-    streams.append({'stream': s.name, 'tap_stream_id': s.name, 'schema': schema, 'metadata': s.load_metadata()})
+    streams.append({'stream': s.name, 'tap_stream_id': s.name, 'schema': schema, 'metadata': s.load_metadata(schema_dir)})
   return streams
 
 #

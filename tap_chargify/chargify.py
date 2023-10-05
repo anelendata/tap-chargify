@@ -144,5 +144,8 @@ class Chargify(object):
         yield j["event"]
 
 
-
-
+  def subscriptions_components(self, bookmark=None):
+    start_date = utils.strptime_with_tz(bookmark).strftime('%Y-%m-%d')
+    for i in self.get("subscriptions_components.json", start_date=start_date, date_field="updated_at", direction="asc"):
+      for j in i["subscriptions_components"]:
+        yield j
